@@ -33,7 +33,7 @@ class AppPages {
 
     // 👇 OTP Verification
     GetPage(
-      name: AppPages.otp, // '/otp'
+      name: '/otp',
       page: () => OtpVerificationPage(email: Get.arguments ?? ""),
       binding: OtpBinding(),
       transition: Transition.rightToLeft,
