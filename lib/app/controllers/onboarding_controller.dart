@@ -1,4 +1,5 @@
 import 'package:diyaar/app/controllers/home_controller.dart';
+import 'package:diyaar/app/views/SignupView.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../views/home_view.dart'; // hubi path-ka saxda ah
@@ -30,7 +31,7 @@ class OnboardingController extends GetxController {
   void finishOnboarding() {
     // gacanta ku register controller-ka
     Get.put(HomeController());
-    Get.offAll(() => const HomeView());
+    Get.offAll(() =>  SignupView());
   }
 
   @override

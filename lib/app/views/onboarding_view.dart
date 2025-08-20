@@ -270,8 +270,6 @@ class OnboardingView extends GetView<OnboardingController> {
                   );
                 }),
               ),
-
-              // 👈 Next / Finish Arrow (stroke + background)
               // 👈 Next / Finish Arrow (stroke + background)
               GestureDetector(
                 onTap: () {
