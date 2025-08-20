@@ -10,49 +10,45 @@ class OtpInputFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: List.generate(4, (index) {
-          return SizedBox(
-            width: 55,
-            child: TextField(
-              focusNode: focusNodes[index],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: List.generate(4, (i) {
+        return SizedBox(
+          width: 60,
+          height: 60,
+          child: Obx(
+            () => TextField(
+              focusNode: focusNodes[i],
               maxLength: 1,
-              textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF0A2940),
+                color: Colors.white, // text color inside box
               ),
+              onChanged: (val) {
+                controller.updateOtp(i, val);
+                if (val.isNotEmpty && i < 3) {
+                  FocusScope.of(context).requestFocus(focusNodes[i + 1]);
+                } else if (val.isEmpty && i > 0) {
+                  FocusScope.of(context).requestFocus(focusNodes[i - 1]);
+                }
+              },
+              controller: TextEditingController(text: controller.otpCode[i]),
               decoration: InputDecoration(
                 counterText: "",
                 filled: true,
-                fillColor: const Color(0xFFEFEFEF),
+                fillColor: const Color(0xFF0A2940), // navy/dark blue background
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
               ),
-              onChanged: (val) {
-                if (val.isNotEmpty) {
-                  controller.updateOtp(index, val);
-                  if (index < 3) {
-                    FocusScope.of(context).requestFocus(focusNodes[index + 1]);
-                  } else {
-                    FocusScope.of(context).unfocus();
-                  }
-                } else {
-                  controller.updateOtp(index, "");
-                  if (index > 0) {
-                    FocusScope.of(context).requestFocus(focusNodes[index - 1]);
-                  }
-                }
-              },
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
