@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  var count = 0.obs;
-  void increment() => count++;
-  void reset() => count.value = 0;
+  var selectedIndex = 0.obs;
+
+  void onTabTapped(int index) {
+    selectedIndex.value = index;
+  }
 }
