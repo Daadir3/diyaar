@@ -10,10 +10,14 @@ class OtpController extends GetxController {
   String get fullOtp => otpCode.join();
 
   void verifyOtp() {
-    if (fullOtp.length == 4 && !fullOtp.contains("")) {
+    // ✅ hubi in afarta god dhammaantood ay buuxaan
+    if (otpCode.every((digit) => digit.isNotEmpty)) {
       Get.snackbar("Success", "OTP Verified Successfully!");
-      // ✅ Halkan waxaad ku diri kartaa user-ka home/dashboard
-      // Get.offAllNamed(AppPages.home);  // tusaale
+
+      // ✅ Ku raro Home page (ama page kale oo aad rabto)
+      Future.delayed(const Duration(seconds: 1), () {
+        Get.offAllNamed('/login'); // route name-gaaga ku qor
+      });
     } else {
       Get.snackbar("Error", "Please enter all 4 digits");
     }
