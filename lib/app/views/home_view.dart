@@ -1,4 +1,8 @@
+// ✅ sax HomeView oo la jaanqaadaya PropertyModel (price = double)
+import 'package:diyaar/app/controllers/property_detail_controller.dart';
+import 'package:diyaar/app/model/PropertyModel.dart';
 import 'package:diyaar/app/utils/app_colors.dart';
+import 'package:diyaar/app/views/property_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:diyaar/app/controllers/home_controller.dart';
@@ -18,7 +22,7 @@ class HomeView extends GetView<HomeController> {
           children: const [
             Text(
               "Location",
-              style: TextStyle(color: Colors.grey, fontSize: 12),
+              style: TextStyle(color: AppColors.customBlue, fontSize: 12),
             ),
             Row(
               children: [
@@ -27,7 +31,7 @@ class HomeView extends GetView<HomeController> {
                 Text(
                   "Cairo, Egypt",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: AppColors.customBlue,
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
@@ -75,7 +79,7 @@ class HomeView extends GetView<HomeController> {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF0C2D48),
+                    color: AppColors.customBlue,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(Icons.tune, color: Colors.white),
@@ -113,28 +117,28 @@ class HomeView extends GetView<HomeController> {
             const SizedBox(height: 10),
             SizedBox(
               height: 240,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  _PropertyCard(
-                    image: "assets/images/guri2.jpg",
-                    type: "Apartment",
-                    title: "Woodland Apartments",
-                    location: "Cairo, Egypt",
-                    price: "\$1500 /month",
-                    rating: 4.5,
-                  ),
-                  _PropertyCard(
-                    image: "assets/images/guri2.jpg",
-                    type: "Apartment",
-                    title: "Woodland Apartments",
-                    location: "Cairo, Egypt",
-                    price: "\$1500 /month",
-                    rating: 4.5,
-                  ),
-                ],
-              ),
+              child: Obx(() {
+                return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: controller.properties.length,
+                  itemBuilder: (context, index) {
+                    final property = controller.properties[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(
+                          () => const PropertyDetailView(),
+                          binding: BindingsBuilder(() {
+                            Get.put(PropertyDetailController());
+                          }),
+                        );
+                      },
+                      child: _PropertyCard(property: property),
+                    );
+                  },
+                );
+              }),
             ),
+
             const SizedBox(height: 20),
 
             // 📍 Nearby Property
@@ -156,14 +160,17 @@ class HomeView extends GetView<HomeController> {
               height: 240,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: const [
+                children: [
                   _PropertyCard(
-                    image: "assets/images/guri2.jpg",
-                    type: "Villa",
-                    title: "Woodland Apartments",
-                    location: "Cairo, Egypt",
-                    price: "\$2200 /month",
-                    rating: 4.9,
+                    property: PropertyModel(
+                      id: "1",
+                      image: "assets/images/guri2.jpg",
+                      type: "Villa",
+                      title: "Woodland Apartments",
+                      location: "Cairo, Egypt",
+                      price: 2200, // ✅ double
+                      rating: 4.9, // ✅ double
+                    ),
                   ),
                 ],
               ),
@@ -176,9 +183,24 @@ class HomeView extends GetView<HomeController> {
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
           currentIndex: controller.selectedIndex.value,
-          onTap: controller.onTabTapped,
+          onTap: (index) {
+            controller.selectedIndex.value = index;
+
+            if (index == 0) {
+              Get.offAllNamed('/'); // ✅ sax: home waa "/"
+            } else if (index == 1) {
+              Get.offAllNamed('/explore');
+            } else if (index == 2) {
+              Get.offAllNamed('/favorite');
+            } else if (index == 3) {
+              Get.offAllNamed('/chat');
+            } else if (index == 4) {
+              Get.offAllNamed('/profile');
+            }
+          },
           selectedItemColor: AppColors.org,
-          unselectedItemColor: Colors.grey,
+          unselectedItemColor: AppColors.customBlue,
+          type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(
@@ -188,6 +210,11 @@ class HomeView extends GetView<HomeController> {
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border),
               label: "Favorite",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.chat),
+              activeIcon: Icon(Icons.chat_bubble),
+              label: "Chat",
             ),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
           ],
@@ -219,23 +246,23 @@ class _Category extends StatelessWidget {
   }
 }
 
-class _PropertyCard extends StatelessWidget {
-  final String image;
-  final String type;
-  final String title;
-  final String location;
-  final String price;
-  final double rating;
+class _PropertyCard extends StatefulWidget {
+  final PropertyModel property;
 
-  const _PropertyCard({
-    required this.image,
-    required this.type,
-    required this.title,
-    required this.location,
-    required this.price,
-    required this.rating,
-    Key? key,
-  }) : super(key: key);
+  const _PropertyCard({required this.property, Key? key}) : super(key: key);
+
+  @override
+  State<_PropertyCard> createState() => _PropertyCardState();
+}
+
+class _PropertyCardState extends State<_PropertyCard> {
+  late bool isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = widget.property.isFavorite;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -249,14 +276,44 @@ class _PropertyCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(
-              image,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
+                child: Image.asset(
+                  widget.property.image,
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isFavorite = !isFavorite;
+                      widget.property.isFavorite = isFavorite;
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : Colors.grey,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -276,7 +333,7 @@ class _PropertyCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        type,
+                        widget.property.type,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -287,7 +344,7 @@ class _PropertyCard extends StatelessWidget {
                       children: [
                         const Icon(Icons.star, color: Colors.yellow, size: 16),
                         Text(
-                          rating.toString(),
+                          widget.property.rating.toString(),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ],
@@ -296,7 +353,7 @@ class _PropertyCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  title,
+                  widget.property.title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -312,14 +369,14 @@ class _PropertyCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      location,
+                      widget.property.location,
                       style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  price,
+                  "\$${widget.property.price.toStringAsFixed(0)} /month", // ✅ sax price (double → string)
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

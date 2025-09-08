@@ -7,7 +7,7 @@ class LoginView extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
         child: Form(
           key: controller.formKey,
@@ -46,13 +46,14 @@ class LoginView extends GetView<LoginController> {
               const SizedBox(height: 8),
               TextFormField(
                 controller: controller.emailController,
-                validator: (val) =>
-                    val!.isEmpty ? "Please enter email" : null,
+                validator: (val) => val!.isEmpty ? "Please enter email" : null,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey.shade300,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 18,
+                    horizontal: 12,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
@@ -82,13 +83,15 @@ class LoginView extends GetView<LoginController> {
               TextFormField(
                 controller: controller.passwordController,
                 obscureText: true,
-                validator: (val) =>
-                    val!.isEmpty ? "Please enter password" : null,
+                validator:
+                    (val) => val!.isEmpty ? "Please enter password" : null,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey.shade300,
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 18,
+                    horizontal: 12,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none,
@@ -123,24 +126,25 @@ class LoginView extends GetView<LoginController> {
               const SizedBox(height: 40),
 
               // Sign In button
-              Obx(() => SizedBox(
-                    width: double.infinity,
-                    height: 55,
-                    child: ElevatedButton(
-                      onPressed: controller.isLoading.value
-                          ? null
-                          : controller.login,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFB95D25),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
+              Obx(
+                () => SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed:
+                        controller.isLoading.value ? null : controller.login,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFB95D25),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
                       ),
-                      child: controller.isLoading.value
-                          ? const CircularProgressIndicator(
+                    ),
+                    child:
+                        controller.isLoading.value
+                            ? const CircularProgressIndicator(
                               color: Colors.white,
                             )
-                          : const Text(
+                            : const Text(
                               "Sign In",
                               style: TextStyle(
                                 fontSize: 18,
@@ -148,8 +152,9 @@ class LoginView extends GetView<LoginController> {
                                 color: Colors.white,
                               ),
                             ),
-                    ),
-                  )),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
