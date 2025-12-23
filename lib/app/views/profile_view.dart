@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/profile_controller.dart';
+import '../controllers/language_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
   const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final LanguageController langController = Get.find();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Get.back(),
+          onPressed: () => Get.offAllNamed('/'),
         ),
-        title: const Text("Profile"),
+        title: Text('profile'.tr),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 20),
+
+            /// PROFILE IMAGE
             Obx(
               () => Stack(
                 children: [
@@ -46,7 +51,10 @@ class ProfileView extends GetView<ProfileController> {
                 ],
               ),
             ),
+
             const SizedBox(height: 12),
+
+            /// USER NAME
             Obx(
               () => Text(
                 controller.userName.value,
@@ -56,7 +64,48 @@ class ProfileView extends GetView<ProfileController> {
                 ),
               ),
             ),
+
             const SizedBox(height: 20),
+
+            /// 🔤 LANGUAGE SELECTOR
+            const Divider(),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Obx(
+                () => ListTile(
+                  leading: const Icon(Icons.language),
+                  title: Text('language'.tr),
+                  trailing: DropdownButton<Locale>(
+                    value: langController.locale.value,
+                    underline: const SizedBox(),
+                    onChanged: (Locale? newLocale) {
+                      if (newLocale != null) {
+                        langController.changeLanguage(newLocale);
+                      }
+                    },
+                    items: const [
+                      DropdownMenuItem(
+                        value: Locale('en', 'US'),
+                        child: Text('English'),
+                      ),
+                      DropdownMenuItem(
+                        value: Locale('so', 'SO'),
+                        child: Text('Somali'),
+                      ),
+                      DropdownMenuItem(
+                        value: Locale('ar', 'AR'),
+                        child: Text('العربية'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            const Divider(),
+
+            /// MENU ITEMS
             Obx(
               () => ListView.separated(
                 physics: const NeverScrollableScrollPhysics(),
@@ -67,7 +116,7 @@ class ProfileView extends GetView<ProfileController> {
                   final item = controller.menuItems[index];
                   return ListTile(
                     leading: Icon(_getIcon(item["icon"])),
-                    title: Text(item["title"]),
+                    title: Text(item["title"].toString().tr),
                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                     onTap: () => controller.onMenuTap(item["title"]),
                   );

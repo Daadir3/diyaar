@@ -1,3 +1,4 @@
+import 'package:diyaar/app/bindings/initial_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -22,6 +23,9 @@ class MyApp extends StatelessWidget {
       translations: AppTranslations(),
       locale: const Locale('en', 'US'),
       fallbackLocale: const Locale('en', 'US'),
+
+      initialBinding: InitialBinding(), // ✅ HALKAN
+
       initialRoute: AppPages.initial,
       getPages: AppPages.routes,
       theme: ThemeData(

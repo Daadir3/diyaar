@@ -10,29 +10,51 @@ class ChatView extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.customBlue),
+          onPressed: () => Get.offAllNamed('/'),
+        ),
+        title: const Text(
+          "Favorite",
+          style: TextStyle(
+            color: AppColors.customBlue,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Header
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              color: Colors.blue,
-              child: Row(
-                children: const [
-                  Icon(Icons.arrow_back, color: Colors.white),
-                  SizedBox(width: 12),
-                  Text(
-                    "Chat",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            //   color: Colors.blue,
+            //   child: Row(
+            //     children: const [
+            //       IconButton(
+            //         icon: const Icon(
+            //           Icons.arrow_back,
+            //           color: AppColors.customBlue,
+            //         ),
+            //         onPressed: () => Get.offAllNamed('/'),
+            //       ),
+            //       SizedBox(width: 12),
+            //       Text(
+            //         "Chat",
+            //         style: TextStyle(
+            //           color: Colors.white,
+            //           fontSize: 18,
+            //           fontWeight: FontWeight.bold,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
 
             // Search bar
             Padding(

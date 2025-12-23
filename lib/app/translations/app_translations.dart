@@ -13,7 +13,18 @@ class AppTranslations extends Translations {
       'skip': 'Skip',
       'next': 'Next',
       'start': 'Start',
+
+      // 🔹 PROFILE
+      'profile': 'Profile',
+      'language': 'Language',
+      'your_profile': 'Your Profile',
+      'payment_methods': 'Payment Methods',
+      'settings': 'Settings',
+      'help_center': 'Help Center',
+      'privacy_policy': 'Privacy Policy',
+      'logout': 'Log out',
     },
+
     'so_SO': {
       'home_title': 'Bogga Hore - GetX',
       'counter': 'Tirinta',
@@ -24,7 +35,18 @@ class AppTranslations extends Translations {
       'skip': 'Ka bood',
       'next': 'Xiga',
       'start': 'Bilow',
+
+      // 🔹 PROFILE
+      'profile': 'Profile',
+      'language': 'Luuqad',
+      'your_profile': 'Xogtayda',
+      'payment_methods': 'Hababka Lacag Bixinta',
+      'settings': 'Dejinta',
+      'help_center': 'Xarunta Caawinta',
+      'privacy_policy': 'Ilaalinta Asturnaanta',
+      'logout': 'Ka bax',
     },
+
     'ar_AR': {
       'home_title': 'الصفحة الرئيسية - GetX',
       'counter': 'العداد',
@@ -35,6 +57,16 @@ class AppTranslations extends Translations {
       'skip': 'تخطى',
       'next': 'التالي',
       'start': 'ابدأ',
+
+      // 🔹 PROFILE
+      'profile': 'الملف الشخصي',
+      'language': 'اللغة',
+      'your_profile': 'ملفك الشخصي',
+      'payment_methods': 'طرق الدفع',
+      'settings': 'الإعدادات',
+      'help_center': 'مركز المساعدة',
+      'privacy_policy': 'سياسة الخصوصية',
+      'logout': 'تسجيل الخروج',
     },
   };
 }

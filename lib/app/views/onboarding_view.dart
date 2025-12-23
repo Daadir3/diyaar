@@ -125,7 +125,9 @@ class OnboardingView extends GetView<OnboardingController> {
                             style: AppTextStyles.body,
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Get.offAllNamed('/login');
+                            },
                             child: Text(
                               "Sign In",
                               style: AppTextStyles.body.copyWith(
@@ -191,7 +193,8 @@ class OnboardingView extends GetView<OnboardingController> {
                       ? const SizedBox.shrink()
                       : GestureDetector(
                         onTap: () {
-                          Get.offAllNamed('/');
+                          // Get.offAllNamed('/');
+                          Get.offAllNamed('/signup');
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

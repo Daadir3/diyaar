@@ -104,24 +104,47 @@ class LoginView extends GetView<LoginController> {
                 ),
               ),
               const SizedBox(height: 15),
-
-              // Forget Password
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    Get.snackbar("Forgot Password", "Reset link sent!");
-                  },
-                  child: const Text(
-                    "Forget Password?",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFB95D25),
-                      decoration: TextDecoration.underline,
+              Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.offAllNamed('/signup');
+                        },
+                        child: const Text(
+                          "Create Account SingUp",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFB95D25),
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+
+                  // Forget Password
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.snackbar("Forgot Password", "Reset link sent!");
+                      },
+                      child: const Text(
+                        "Forget Password?",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFB95D25),
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 40),
 
