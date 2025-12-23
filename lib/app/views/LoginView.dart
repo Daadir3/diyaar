@@ -15,28 +15,28 @@ class LoginView extends GetView<LoginController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
-              const Text(
-                "Sign in",
-                style: TextStyle(
+              Text(
+                "sign_in".tr,
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF0A2940),
                 ),
               ),
               const SizedBox(height: 10),
-              const Text(
-                "Hi Welcome back, you’ve been missed",
+              Text(
+                "welcome_back".tr,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, color: Colors.black54),
+                style: const TextStyle(fontSize: 14, color: Colors.black54),
               ),
               const SizedBox(height: 40),
 
               // Email
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Email",
-                  style: TextStyle(
+                  "email".tr,
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0A2940),
@@ -46,7 +46,7 @@ class LoginView extends GetView<LoginController> {
               const SizedBox(height: 8),
               TextFormField(
                 controller: controller.emailController,
-                validator: (val) => val!.isEmpty ? "Please enter email" : null,
+                validator: (val) => val!.isEmpty ? "enter_email".tr : null,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey.shade300,
@@ -68,11 +68,11 @@ class LoginView extends GetView<LoginController> {
               const SizedBox(height: 20),
 
               // Password
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Password",
-                  style: TextStyle(
+                  "password".tr,
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0A2940),
@@ -83,8 +83,7 @@ class LoginView extends GetView<LoginController> {
               TextFormField(
                 controller: controller.passwordController,
                 obscureText: true,
-                validator:
-                    (val) => val!.isEmpty ? "Please enter password" : null,
+                validator: (val) => val!.isEmpty ? "enter_password".tr : null,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey.shade300,
@@ -113,9 +112,9 @@ class LoginView extends GetView<LoginController> {
                         onTap: () {
                           Get.offAllNamed('/signup');
                         },
-                        child: const Text(
-                          "Create Account SingUp",
-                          style: TextStyle(
+                        child: Text(
+                          "create_account_signup".tr,
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFFB95D25),
@@ -125,17 +124,18 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ),
                   ),
-
-                  // Forget Password
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                       onTap: () {
-                        Get.snackbar("Forgot Password", "Reset link sent!");
+                        Get.snackbar(
+                          "forgot_password".tr,
+                          "reset_link_sent".tr,
+                        );
                       },
-                      child: const Text(
-                        "Forget Password?",
-                        style: TextStyle(
+                      child: Text(
+                        "forget_password".tr,
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFFB95D25),
@@ -167,9 +167,9 @@ class LoginView extends GetView<LoginController> {
                             ? const CircularProgressIndicator(
                               color: Colors.white,
                             )
-                            : const Text(
-                              "Sign In",
-                              style: TextStyle(
+                            : Text(
+                              "sign_in".tr,
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,

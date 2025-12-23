@@ -1,8 +1,8 @@
-import 'package:diyaar/app/controllers/home_controller.dart';
-import 'package:diyaar/app/views/SignupView.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import '../views/home_view.dart'; // hubi path-ka saxda ah
+import 'package:get_storage/get_storage.dart';
+import '../controllers/home_controller.dart';
+import '../views/SignupView.dart';
 
 class OnboardingController extends GetxController {
   final pageController = PageController();
@@ -29,9 +29,10 @@ class OnboardingController extends GetxController {
   }
 
   void finishOnboarding() {
-    // gacanta ku register controller-ka
+    final box = GetStorage();
+    box.write('isOnboardingCompleted', true); // ✅ Save flag
     Get.put(HomeController());
-    Get.offAll(() =>  SignupView());
+    Get.offAll(() => SignupView()); // ama '/' haddii aad rabto Home
   }
 
   @override

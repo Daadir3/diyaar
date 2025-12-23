@@ -80,9 +80,10 @@ class _ProfileHeader extends StatelessWidget {
           Obx(
             () => Text(
               controller.userName.value,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -162,10 +163,9 @@ class _LanguageItem extends StatelessWidget {
     return Obx(
       () => ListTile(
         title: Text(title),
-        trailing:
-            controller.locale.value == locale
-                ? const Icon(Icons.check, color: Colors.green)
-                : const SizedBox.shrink(),
+        trailing: controller.locale.value == locale
+            ? const Icon(Icons.check, color: Colors.green)
+            : const SizedBox.shrink(),
         onTap: () {
           controller.changeLanguage(locale);
           Get.back();
@@ -196,11 +196,14 @@ class _MenuSection extends StatelessWidget {
           separatorBuilder: (_, __) => const Divider(height: 1),
           itemBuilder: (context, index) {
             final item = controller.menuItems[index];
+            final iconName = item['icon'] ?? 'circle';
+            final title = item['title'] ?? '';
+
             return ListTile(
-              leading: Icon(_getIcon(item['icon'])),
-              title: Text(item['title'].toString().tr),
+              leading: Icon(_getIcon(iconName)),
+              title: Text(title.tr),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => controller.onMenuTap(item['title']),
+              onTap: () => controller.onMenuTap(title),
             );
           },
         ),

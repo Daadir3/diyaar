@@ -1,19 +1,23 @@
-import 'package:diyaar/app/bindings/initial_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'app/routes/app_pages.dart';
 import 'app/translations/app_translations.dart';
 import 'app/utils/app_colors.dart';
+import 'app/bindings/initial_binding.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
-  runApp(const MyApp());
+  final box = GetStorage();
+  bool isOnboardingCompleted = box.read('isOnboardingCompleted') ?? false;
+
+  runApp(MyApp(isOnboardingCompleted: isOnboardingCompleted));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isOnboardingCompleted;
+  const MyApp({super.key, required this.isOnboardingCompleted});
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +27,13 @@ class MyApp extends StatelessWidget {
       translations: AppTranslations(),
       locale: const Locale('en', 'US'),
       fallbackLocale: const Locale('en', 'US'),
+      initialBinding: InitialBinding(),
 
-      initialBinding: InitialBinding(), // ✅ HALKAN
+      // ✅ Halkan go'aami route-ka ugu horeeya
+      initialRoute: isOnboardingCompleted ? '/' : '/onboarding',
 
-      initialRoute: AppPages.initial,
       getPages: AppPages.routes,
+
       theme: ThemeData(
         primaryColor: AppColors.primary,
         scaffoldBackgroundColor: AppColors.background,

@@ -5,8 +5,6 @@ import '../controllers/SignupController.dart';
 
 class SignupView extends StatelessWidget {
   SignupView({super.key});
-
-  // ✅ Halkan ayaan ku register gareynaa controller-ka
   final SignupController controller = Get.put(SignupController());
 
   @override
@@ -20,47 +18,46 @@ class SignupView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  "Create Account",
-                  style: TextStyle(
+                Text(
+                  "create_account".tr,
+                  style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  "Fill your information below or register\nwith your social account.",
+                Text(
+                  "fill_info_or_social".tr,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black54, fontSize: 14),
+                  style: const TextStyle(color: Colors.black54, fontSize: 14),
                 ),
                 const SizedBox(height: 30),
 
                 // Name
                 TextFormField(
                   controller: controller.nameController,
-                  decoration: const InputDecoration(
-                    labelText: "Name",
+                  decoration: InputDecoration(
+                    labelText: "name".tr,
                     filled: true,
                     fillColor: Colors.black12,
                   ),
-                  validator:
-                      (value) => value!.isEmpty ? "Enter your name" : null,
+                  validator: (value) => value!.isEmpty ? "enter_name".tr : null,
                 ),
                 const SizedBox(height: 15),
 
                 // Email
                 TextFormField(
                   controller: controller.emailController,
-                  decoration: const InputDecoration(
-                    labelText: "Email",
+                  decoration: InputDecoration(
+                    labelText: "email".tr,
                     filled: true,
                     fillColor: Colors.black12,
                   ),
                   validator:
                       (value) =>
                           !GetUtils.isEmail(value!)
-                              ? "Enter valid email"
+                              ? "enter_valid_email".tr
                               : null,
                 ),
                 const SizedBox(height: 15),
@@ -68,17 +65,15 @@ class SignupView extends StatelessWidget {
                 // Password
                 TextFormField(
                   controller: controller.passwordController,
-                  decoration: const InputDecoration(
-                    labelText: "Password",
+                  decoration: InputDecoration(
+                    labelText: "password".tr,
                     filled: true,
                     fillColor: Colors.black12,
                   ),
                   obscureText: true,
                   validator:
                       (value) =>
-                          value!.length < 6
-                              ? "Password must be at least 6 chars"
-                              : null,
+                          value!.length < 6 ? "password_min_chars".tr : null,
                 ),
                 const SizedBox(height: 20),
 
@@ -91,14 +86,12 @@ class SignupView extends StatelessWidget {
                         onChanged: (val) => controller.agreeTerms.value = val!,
                         activeColor: Colors.brown,
                       ),
-                      const Text("Agree with "),
+                      Text("agree_with".tr),
                       GestureDetector(
-                        onTap: () {
-                          // TODO: Navigate to terms screen
-                        },
-                        child: const Text(
-                          "Terms & Conditions",
-                          style: TextStyle(
+                        onTap: () {},
+                        child: Text(
+                          "terms_conditions".tr,
+                          style: const TextStyle(
                             color: Colors.brown,
                             fontWeight: FontWeight.bold,
                           ),
@@ -110,7 +103,6 @@ class SignupView extends StatelessWidget {
                 const SizedBox(height: 30),
 
                 // Sign Up Button
-                // Sign Up Button
                 SizedBox(
                   width: double.infinity,
                   height: 50,
@@ -121,10 +113,10 @@ class SignupView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: controller.signup, // ✅ sax
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(
+                    onPressed: controller.signup,
+                    child: Text(
+                      "sign_up".tr,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
