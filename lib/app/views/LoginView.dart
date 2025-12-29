@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../controllers/LoginController.dart';
 
 class LoginView extends GetView<LoginController> {
+  const LoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,141 +16,107 @@ class LoginView extends GetView<LoginController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 40),
-              Text(
-                "sign_in".tr,
-                style: const TextStyle(
-                  fontSize: 24,
+              const SizedBox(height: 60),
+
+              const Text(
+                "Sign In",
+                style: TextStyle(
+                  fontSize: 26,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF0A2940),
                 ),
               ),
+
               const SizedBox(height: 10),
-              Text(
-                "welcome_back".tr,
+
+              const Text(
+                "Welcome back, please login to continue",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14, color: Colors.black54),
+                style: TextStyle(fontSize: 14, color: Colors.black54),
               ),
+
               const SizedBox(height: 40),
 
-              // Email
-              Align(
+              /// Email
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "email".tr,
-                  style: const TextStyle(
-                    fontSize: 15,
+                  "Email",
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0A2940),
                   ),
                 ),
               ),
               const SizedBox(height: 8),
+
               TextFormField(
                 controller: controller.emailController,
-                validator: (val) => val!.isEmpty ? "enter_email".tr : null,
+                validator: (v) => v!.isEmpty ? "Email is required" : null,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey.shade300,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 18,
-                    horizontal: 12,
-                  ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
                   ),
                 ),
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
               ),
+
               const SizedBox(height: 20),
 
-              // Password
-              Align(
+              /// Password
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "password".tr,
-                  style: const TextStyle(
-                    fontSize: 15,
+                  "Password",
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0A2940),
                   ),
                 ),
               ),
               const SizedBox(height: 8),
+
               TextFormField(
                 controller: controller.passwordController,
                 obscureText: true,
-                validator: (val) => val!.isEmpty ? "enter_password".tr : null,
+                validator: (v) => v!.isEmpty ? "Password is required" : null,
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey.shade300,
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 18,
-                    horizontal: 12,
-                  ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide.none,
                   ),
                 ),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              ),
+
+              const SizedBox(height: 10),
+
+              /// 🔹 Forget password
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.snackbar(
+                      "Forgot Password",
+                      "Reset link sent to your email",
+                    );
+                  },
+                  child: const Text(
+                    "Forgot password?",
+                    style: TextStyle(
+                      color: Color(0xFFB95D25),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 15),
-              Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: GestureDetector(
-                        onTap: () {
-                          Get.offAllNamed('/signup');
-                        },
-                        child: Text(
-                          "create_account_signup".tr,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFB95D25),
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () {
-                        Get.snackbar(
-                          "forgot_password".tr,
-                          "reset_link_sent".tr,
-                        );
-                      },
-                      child: Text(
-                        "forget_password".tr,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFB95D25),
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 40),
 
-              // Sign In button
+              const SizedBox(height: 30),
+
+              /// Login button
               Obx(
                 () => SizedBox(
                   width: double.infinity,
@@ -167,14 +135,28 @@ class LoginView extends GetView<LoginController> {
                             ? const CircularProgressIndicator(
                               color: Colors.white,
                             )
-                            : Text(
-                              "sign_in".tr,
-                              style: const TextStyle(
+                            : const Text(
+                              "LOGIN",
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              GestureDetector(
+                onTap: () => Get.offAllNamed('/signup'),
+                child: const Text(
+                  "Create new account",
+                  style: TextStyle(
+                    color: Color(0xFFB95D25),
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
                   ),
                 ),
               ),

@@ -1,25 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../routes/app_pages.dart';
+import '../services/auth_service.dart';
+import '../services/token_storage.dart';
 
 class LoginController extends GetxController {
-  final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  var isLoading = false.obs;
+  final formKey = GlobalKey<FormState>();
 
-  void login() {
-    if (formKey.currentState!.validate()) {
+  final isLoading = false.obs;
+
+  Future<void> login() async {
+    if (!formKey.currentState!.validate()) return;
+
+    try {
       isLoading.value = true;
 
-      // 👇 Halkan waxaad ku dari kartaa API call
-      Future.delayed(const Duration(seconds: 2), () {
-        isLoading.value = false;
-        // Haddii login success
-        Get.offAllNamed('/home'); // to Splash/Home
-        // haddii error:
-        // Get.snackbar("Error", "Invalid email or password");
-      });
+      final auth = await AuthService.login(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // 🔐 Save token securely
+      await TokenStorage.saveToken(auth.accessToken);
+
+      Get.offAllNamed('/home');
+    } catch (e) {
+      Get.snackbar(
+        "Login Failed",
+        "Email ama password khalad ah",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
     }
+  }
+
+  @override
+  void onClose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.onClose();
   }
 }

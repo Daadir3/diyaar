@@ -1,6 +1,5 @@
-// lib/app/controllers/home_controller.dart
-import 'package:diyaar/app/model/PropertyModel.dart';
 import 'package:get/get.dart';
+import '../model/PropertyModel.dart';
 
 class HomeController extends GetxController {
   var selectedIndex = 0.obs;
@@ -12,18 +11,6 @@ class HomeController extends GetxController {
     loadMockData();
   }
 
-  void onTabTapped(int index) {
-    selectedIndex.value = index;
-  }
-
-  void toggleFavorite(PropertyModel property) {
-    property.isFavorite = !property.isFavorite;
-    properties.refresh();
-  }
-
-  List<PropertyModel> get favorites =>
-      properties.where((p) => p.isFavorite).toList();
-
   void loadMockData() {
     properties.value = [
       PropertyModel(
@@ -32,7 +19,7 @@ class HomeController extends GetxController {
         type: "Apartment",
         title: "Luxury Apartment",
         location: "Cairo, Egypt",
-        price: 1500.0,
+        price: 1500,
         rating: 4.5,
       ),
       PropertyModel(
@@ -41,9 +28,19 @@ class HomeController extends GetxController {
         type: "Villa",
         title: "Modern Villa",
         location: "Alexandria, Egypt",
-        price: 2500.0,
+        price: 2500,
         rating: 4.8,
       ),
     ];
   }
+
+  /// ✅ Update favorite status for a property by ID
+  void updateFavoriteStatus(String propertyId, bool isFavorite) {
+    final index =
+        properties.indexWhere((property) => property.id == propertyId);
+    if (index != -1) {
+      properties[index].isFavorite.value = isFavorite;
+    }
+  }
+  
 }

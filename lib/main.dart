@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+
 import 'app/routes/app_pages.dart';
 import 'app/translations/app_translations.dart';
 import 'app/utils/app_colors.dart';
@@ -9,14 +10,19 @@ import 'app/bindings/initial_binding.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
+
   final box = GetStorage();
-  bool isOnboardingCompleted = box.read('isOnboardingCompleted') ?? false;
+
+  // ✅ onboarding default = false (app cusub)
+  final bool isOnboardingCompleted =
+      box.read('isOnboardingCompleted') ?? false;
 
   runApp(MyApp(isOnboardingCompleted: isOnboardingCompleted));
 }
 
 class MyApp extends StatelessWidget {
   final bool isOnboardingCompleted;
+
   const MyApp({super.key, required this.isOnboardingCompleted});
 
   @override
@@ -24,12 +30,14 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Professional GetX App',
+
       translations: AppTranslations(),
       locale: const Locale('en', 'US'),
       fallbackLocale: const Locale('en', 'US'),
+
       initialBinding: InitialBinding(),
 
-      // ✅ Halkan go'aami route-ka ugu horeeya
+      // ✅ ONBOARDING HAL MAR KALIYA
       initialRoute: isOnboardingCompleted ? '/' : '/onboarding',
 
       getPages: AppPages.routes,
@@ -45,7 +53,9 @@ class MyApp extends StatelessWidget {
           backgroundColor: AppColors.secondary,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+          ),
         ),
       ),
     );

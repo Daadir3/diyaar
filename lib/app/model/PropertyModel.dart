@@ -1,4 +1,5 @@
-// lib/app/models/property_model.dart
+import 'package:get/get.dart';
+
 class PropertyModel {
   final String id;
   final String image;
@@ -7,7 +8,7 @@ class PropertyModel {
   final String location;
   final double price;
   final double rating;
-  bool isFavorite;
+  RxBool isFavorite;
 
   PropertyModel({
     required this.id,
@@ -17,39 +18,30 @@ class PropertyModel {
     required this.location,
     required this.price,
     required this.rating,
-    this.isFavorite = false,
-  });
+    bool favorite = false,
+  }) : isFavorite = favorite.obs;
 
-  factory PropertyModel.fromMap(Map<String, dynamic> map) {
-    return PropertyModel(
-      id: map['id']?.toString() ?? '',
-      image: map['image']?.toString() ?? '',
-      type: map['type']?.toString() ?? '',
-      title: map['title']?.toString() ?? '',
-      location: map['location']?.toString() ?? '',
-      price: _toDouble(map['price']),
-      rating: _toDouble(map['rating']),
-      isFavorite: map['isFavorite'] ?? false,
-    );
-  }
+  // ✅ Convert to JSON for storage
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'image': image,
+        'type': type,
+        'title': title,
+        'location': location,
+        'price': price,
+        'rating': rating,
+        'isFavorite': isFavorite.value,
+      };
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'image': image,
-      'type': type,
-      'title': title,
-      'location': location,
-      'price': price,
-      'rating': rating,
-      'isFavorite': isFavorite,
-    };
-  }
-
-  static double _toDouble(dynamic value) {
-    if (value == null) return 0.0;
-    if (value is double) return value;
-    if (value is int) return value.toDouble();
-    return double.tryParse(value.toString()) ?? 0.0;
-  }
+  // ✅ Convert from JSON for loading
+  factory PropertyModel.fromJson(Map<String, dynamic> json) => PropertyModel(
+        id: json['id'],
+        image: json['image'],
+        type: json['type'],
+        title: json['title'],
+        location: json['location'],
+        price: (json['price'] as num).toDouble(),
+        rating: (json['rating'] as num).toDouble(),
+        favorite: json['isFavorite'] ?? false,
+      );
 }

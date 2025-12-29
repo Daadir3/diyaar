@@ -1,131 +1,254 @@
-import 'package:diyaar/app/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/SignupController.dart';
 
-class SignupView extends StatelessWidget {
-  SignupView({super.key});
-  final SignupController controller = Get.put(SignupController());
+class SignupView extends GetView<SignupController> {
+  const SignupView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: controller.formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "create_account".tr,
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+        child: Form(
+          key: controller.formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 60),
+              const Text(
+                "Create Account",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF0A2940),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  "fill_info_or_social".tr,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.black54, fontSize: 14),
-                ),
-                const SizedBox(height: 30),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "Fill in the info to continue",
+                style: TextStyle(fontSize: 14, color: Colors.black54),
+              ),
+              const SizedBox(height: 30),
 
-                // Name
-                TextFormField(
-                  controller: controller.nameController,
-                  decoration: InputDecoration(
-                    labelText: "name".tr,
-                    filled: true,
-                    fillColor: Colors.black12,
+              // Name
+              const Text("Name", style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: controller.nameController,
+                validator: (v) => v!.isEmpty ? "Name required" : null,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey.shade200,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
                   ),
-                  validator: (value) => value!.isEmpty ? "enter_name".tr : null,
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 18, horizontal: 12),
                 ),
-                const SizedBox(height: 15),
+              ),
+              const SizedBox(height: 20),
 
-                // Email
-                TextFormField(
-                  controller: controller.emailController,
-                  decoration: InputDecoration(
-                    labelText: "email".tr,
-                    filled: true,
-                    fillColor: Colors.black12,
+              // Email
+              const Text("Email", style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: controller.emailController,
+                validator: (v) =>
+                    !GetUtils.isEmail(v!) ? "Valid email required" : null,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey.shade200,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
                   ),
-                  validator:
-                      (value) =>
-                          !GetUtils.isEmail(value!)
-                              ? "enter_valid_email".tr
-                              : null,
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 18, horizontal: 12),
                 ),
-                const SizedBox(height: 15),
+              ),
+              const SizedBox(height: 20),
 
-                // Password
-                TextFormField(
-                  controller: controller.passwordController,
-                  decoration: InputDecoration(
-                    labelText: "password".tr,
-                    filled: true,
-                    fillColor: Colors.black12,
-                  ),
-                  obscureText: true,
-                  validator:
-                      (value) =>
-                          value!.length < 6 ? "password_min_chars".tr : null,
-                ),
-                const SizedBox(height: 20),
-
-                // Terms Checkbox
-                Obx(
-                  () => Row(
-                    children: [
-                      Checkbox(
-                        value: controller.agreeTerms.value,
-                        onChanged: (val) => controller.agreeTerms.value = val!,
-                        activeColor: Colors.brown,
+              // Phone Number
+              const Text("Phone Number", style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Obx(
+                    () => Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      Text("agree_with".tr),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          "terms_conditions".tr,
-                          style: const TextStyle(
-                            color: Colors.brown,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      child: DropdownButton<String>(
+                        value: controller.selectedCountry.value,
+                        items: controller.countries.map((country) {
+                          return DropdownMenuItem<String>(
+                            value: country['dialCode'],
+                            child: Text("${country['flag']} ${country['dialCode']}"),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          if (val != null) controller.selectedCountry.value = val;
+                        },
+                        underline: const SizedBox(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.phoneController,
+                      keyboardType: TextInputType.phone,
+                      validator: (v) =>
+                          v == null || v.isEmpty ? "Phone number required" : null,
+                      decoration: InputDecoration(
+                        hintText: "Enter phone number",
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 18,
+                          horizontal: 12,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
+                ],
+              ),
+              const SizedBox(height: 20),
 
-                // Sign Up Button
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.org,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+              // Password
+              const Text("Password", style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Obx(
+                () => TextFormField(
+                  controller: controller.passwordController,
+                  obscureText: controller.isPasswordHidden.value,
+                  validator: (v) =>
+                      v!.length < 6 ? "Password must be 6+ chars" : null,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 18,
+                      horizontal: 12,
                     ),
-                    onPressed: controller.signup,
-                    child: Text(
-                      "sign_up".tr,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(controller.isPasswordHidden.value
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: () {
+                        controller.isPasswordHidden.value =
+                            !controller.isPasswordHidden.value;
+                      },
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+
+              // Confirm Password
+              const Text("Confirm Password", style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              Obx(
+                () => TextFormField(
+                  controller: controller.confirmPasswordController,
+                  obscureText: controller.isConfirmPasswordHidden.value,
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return "Confirm password required";
+                    if (v != controller.passwordController.text)
+                      return "Passwords do not match";
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey.shade200,
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 18,
+                      horizontal: 12,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(controller.isConfirmPasswordHidden.value
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: () {
+                        controller.isConfirmPasswordHidden.value =
+                            !controller.isConfirmPasswordHidden.value;
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 25),
+
+              // Terms
+              Obx(
+                () => Row(
+                  children: [
+                    Checkbox(
+                      value: controller.agreeTerms.value,
+                      onChanged: (val) => controller.agreeTerms.value = val!,
+                      activeColor: const Color(0xFFB95D25),
+                    ),
+                    const Text("I agree with "),
+                    GestureDetector(
+                      onTap: () {},
+                      child: const Text(
+                        "Terms & Conditions",
+                        style: TextStyle(
+                          color: Color(0xFFB95D25),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+
+              // Signup Button
+              Obx(
+                () => SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed:
+                        controller.isLoading.value ? null : controller.signup,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFFB95D25),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: controller.isLoading.value
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            "SIGN UP",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

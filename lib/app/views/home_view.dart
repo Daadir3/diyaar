@@ -1,4 +1,5 @@
 // ✅ sax HomeView oo la jaanqaadaya PropertyModel (price = double)
+import 'package:diyaar/app/controllers/FavoriteController.dart';
 import 'package:diyaar/app/controllers/property_detail_controller.dart';
 import 'package:diyaar/app/model/PropertyModel.dart';
 import 'package:diyaar/app/utils/app_colors.dart';
@@ -246,23 +247,11 @@ class _Category extends StatelessWidget {
   }
 }
 
-class _PropertyCard extends StatefulWidget {
+class _PropertyCard extends StatelessWidget {
   final PropertyModel property;
+  final FavoriteController favoriteController = Get.find<FavoriteController>();
 
-  const _PropertyCard({required this.property, Key? key}) : super(key: key);
-
-  @override
-  State<_PropertyCard> createState() => _PropertyCardState();
-}
-
-class _PropertyCardState extends State<_PropertyCard> {
-  late bool isFavorite;
-
-  @override
-  void initState() {
-    super.initState();
-    isFavorite = widget.property.isFavorite;
-  }
+  _PropertyCard({required this.property, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +272,7 @@ class _PropertyCardState extends State<_PropertyCard> {
                   top: Radius.circular(16),
                 ),
                 child: Image.asset(
-                  widget.property.image,
+                  property.image,
                   height: 120,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -293,22 +282,24 @@ class _PropertyCardState extends State<_PropertyCard> {
                 top: 8,
                 right: 8,
                 child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isFavorite = !isFavorite;
-                      widget.property.isFavorite = isFavorite;
-                    });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.8),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      isFavorite ? Icons.favorite : Icons.favorite_border,
-                      color: isFavorite ? Colors.red : Colors.grey,
-                      size: 20,
+                  onTap: () => favoriteController.toggleFavorite(property),
+                  child: Obx(
+                    () => Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.8),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        property.isFavorite.value
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color:
+                            property.isFavorite.value
+                                ? Colors.red
+                                : Colors.grey,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -316,7 +307,7 @@ class _PropertyCardState extends State<_PropertyCard> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -333,7 +324,7 @@ class _PropertyCardState extends State<_PropertyCard> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        widget.property.type,
+                        property.type,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
@@ -344,7 +335,7 @@ class _PropertyCardState extends State<_PropertyCard> {
                       children: [
                         const Icon(Icons.star, color: Colors.yellow, size: 16),
                         Text(
-                          widget.property.rating.toString(),
+                          property.rating.toString(),
                           style: const TextStyle(color: Colors.white),
                         ),
                       ],
@@ -353,7 +344,7 @@ class _PropertyCardState extends State<_PropertyCard> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  widget.property.title,
+                  property.title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -369,14 +360,14 @@ class _PropertyCardState extends State<_PropertyCard> {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      widget.property.location,
+                      property.location,
                       style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  "\$${widget.property.price.toStringAsFixed(0)} /month", // ✅ sax price (double → string)
+                  "\$${property.price.toStringAsFixed(0)} /month",
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,

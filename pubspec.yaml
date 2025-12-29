@@ -38,6 +38,8 @@ dependencies:
   get_storage: ^2.1.1
   shared_preferences: ^2.5.3
   image_picker: ^1.2.1
+  flutter_secure_storage: ^10.0.0
+  intl_phone_number_input: ^0.7.5
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +66,7 @@ flutter:
     - assets/images/page3.png
     - assets/images/guri1.png
     - assets/images/guri2.jpg
+    - assets/images/loogodiyyar.png
 
 
 
@@ -75,10 +78,10 @@ flutter:
 
 
 # Launcher icon configuration
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/images/loogodiyyar.png"
+# flutter_icons:
+#   android: true
+#   ios: true
+#   image_path: "assets/images/loogodiyyar.png"
     
 
   # The following line ensures that the Material Icons font is

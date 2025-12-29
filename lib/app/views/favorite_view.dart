@@ -16,7 +16,7 @@ class FavoriteView extends GetView<FavoriteController> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.customBlue),
-          onPressed: () => Get.offAllNamed('/signup'),
+          onPressed: () => Get.offAllNamed('/'),
         ),
         title: const Text(
           "Favorite",
@@ -74,7 +74,7 @@ class FavoriteView extends GetView<FavoriteController> {
           ),
           const SizedBox(height: 10),
 
-          // 🔹 Favorite Properties List
+          // 🔹 Favorite Properties List with swipe-to-delete
           Expanded(
             child: Obx(() {
               final filtered = controller.filteredFavorites;
@@ -92,7 +92,46 @@ class FavoriteView extends GetView<FavoriteController> {
                 itemCount: filtered.length,
                 itemBuilder: (context, index) {
                   final property = filtered[index];
-                  return _FavoriteCard(property: property);
+                  return Dismissible(
+                    key: ValueKey(property.id),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (_) {
+                      controller.deleteFavorite(property);
+                      Get.snackbar(
+                        "Deleted",
+                        "${property.title} removed from favorites",
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    },
+                    background: Container(
+                      alignment: Alignment.centerRight,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                    child: Card(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 2,
+                      child: ListTile(
+                        leading: Image.asset(
+                          property.image,
+                          width: 80,
+                          fit: BoxFit.cover,
+                        ),
+                        title: Text(property.title),
+                        subtitle: Text(
+                          "${property.location} - \$${property.price.toStringAsFixed(0)} /month",
+                        ),
+                        trailing: const Icon(Icons.favorite, color: Colors.red),
+                      ),
+                    ),
+                  );
                 },
               );
             }),
@@ -133,29 +172,6 @@ class _FilterChip extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-    );
-  }
-}
-
-// 🔹 Favorite Property Card
-class _FavoriteCard extends StatelessWidget {
-  final PropertyModel property;
-  const _FavoriteCard({required this.property, Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 2,
-      child: ListTile(
-        leading: Image.asset(property.image, width: 80, fit: BoxFit.cover),
-        title: Text(property.title),
-        subtitle: Text(
-          "${property.location} - \$${property.price.toStringAsFixed(0)} /month",
-        ),
-        trailing: const Icon(Icons.favorite, color: Colors.red),
       ),
     );
   }

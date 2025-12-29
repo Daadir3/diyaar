@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../controllers/home_controller.dart';
-import '../views/SignupView.dart';
+import '../views/SignupView.dart'; // ✅ Import this
 
 class OnboardingController extends GetxController {
   final pageController = PageController();
@@ -32,7 +32,7 @@ class OnboardingController extends GetxController {
     final box = GetStorage();
     box.write('isOnboardingCompleted', true); // ✅ Save flag
     Get.put(HomeController());
-    Get.offAll(() => SignupView()); // ama '/' haddii aad rabto Home
+    Get.offAll(() => SignupView()); // ✅ Now it works
   }
 
   @override

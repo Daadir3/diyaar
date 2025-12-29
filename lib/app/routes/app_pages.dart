@@ -1,47 +1,62 @@
 import 'package:diyaar/app/bindings/FavoriteBinding.dart';
+import 'package:diyaar/app/bindings/LoginBinding.dart';
+import 'package:diyaar/app/bindings/OtpBinding.dart';
+import 'package:diyaar/app/bindings/SignupBinding.dart';
+import 'package:diyaar/app/bindings/booking_tour_binding.dart';
+import 'package:diyaar/app/bindings/chat_binding.dart';
 import 'package:diyaar/app/bindings/profile_binding.dart';
-import 'package:diyaar/app/views/favorite_view.dart';
+import 'package:diyaar/app/views/LoginView.dart';
+import 'package:diyaar/app/views/OtpVerificationPage.dart';
+import 'package:diyaar/app/views/SignupView.dart';
+import 'package:diyaar/app/views/booking_tour_view.dart';
+import 'package:diyaar/app/views/chat_view.dart';
+import 'package:diyaar/app/views/detail_view.dart';
+import 'package:diyaar/app/views/favorite_view.dart' show FavoriteView;
 import 'package:diyaar/app/views/profile_view.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../views/splash_view.dart';
 import '../views/onboarding_view.dart';
 import '../views/home_view.dart';
-import '../views/detail_view.dart';
-import '../views/SignupView.dart';
-import '../views/OtpVerificationPage.dart';
-import '../views/LoginView.dart';
-import '../views/booking_tour_view.dart';
-
-// ✅ Chat imports
-import '../views/chat_view.dart';
-import '../bindings/chat_binding.dart';
-
-import '../bindings/home_binding.dart';
+import '../views/splash_view.dart';
 import '../bindings/onboarding_binding.dart';
-import '../bindings/SignupBinding.dart';
-import '../bindings/OtpBinding.dart';
-import '../bindings/LoginBinding.dart';
-import '../bindings/booking_tour_binding.dart';
+import '../bindings/home_binding.dart';
+import 'package:get_storage/get_storage.dart';
+
+class OnboardingMiddleware extends GetMiddleware {
+  @override
+  RouteSettings? redirect(String? route) {
+    final box = GetStorage();
+    final isCompleted = box.read('isOnboardingCompleted') ?? false;
+    if (isCompleted) {
+      return const RouteSettings(name: '/login');
+    }
+    return null;
+  }
+}
 
 class AppPages {
-  static const initial = '/splash';
-  static const otp = '/otp';
-  static const login = '/login';
-  static const booking = '/booking';
-  static const profile = '/profile';
-  static const favorite = '/favorite';
-  static const chat = '/chat'; // ✅ cusub
-
   static final routes = [
+    // Splash
     GetPage(name: '/splash', page: () => const SplashView()),
+
+    // Onboarding
     GetPage(
       name: '/onboarding',
       page: () => const OnboardingView(),
       binding: OnboardingBinding(),
+      middlewares: [OnboardingMiddleware()],
     ),
-    GetPage(name: '/', page: () => const HomeView(), binding: HomeBinding()),
-    GetPage(name: '/detail', page: () => const DetailView()),
+
+    // Home
+    GetPage(name: '/', page: () =>  HomeView(), binding: HomeBinding()),
+
+    // Login
+    GetPage(
+      name: '/login',
+      page: () => LoginView(),
+      binding: LoginBinding(),
+      transition: Transition.rightToLeft,
+    ),
 
     // Signup
     GetPage(
@@ -58,15 +73,7 @@ class AppPages {
       transition: Transition.rightToLeft,
     ),
 
-    // Login
-    GetPage(
-      name: '/login',
-      page: () => LoginView(),
-      binding: LoginBinding(),
-      transition: Transition.rightToLeft,
-    ),
-
-    // Booking Tour
+    // Booking
     GetPage(
       name: '/booking',
       page: () => const BookingTourView(),
@@ -84,17 +91,20 @@ class AppPages {
     // Favorite
     GetPage(
       name: '/favorite',
-      page: () => const FavoriteView(),
+      page: () => FavoriteView(),
       binding: FavoriteBinding(),
       transition: Transition.rightToLeft,
     ),
 
-    // ✅ Chat
+    // Chat
     GetPage(
       name: '/chat',
       page: () => const ChatView(),
       binding: ChatBinding(),
       transition: Transition.rightToLeft,
     ),
+
+    // Detail
+    GetPage(name: '/detail', page: () => const DetailView()),
   ];
 }
